@@ -3,23 +3,41 @@ import flowers.Flower;
 public class Main {
 
     static FlowerStore flowerStore = new FlowerStore();
+    static String path1 = "files/order.txt";
+    static String path2 = "files/bouquet.txt";
 
-    static void show(Flower[] bouquet) {
+    public static String formBouquet(Flower[] bouquet) {
+        String buffer = "";
         for (int i = 0; i < bouquet.length; i++) {
             String[] flower = bouquet[i].getClass().getName().split("\\.");
-            System.out.print(flower[1]);
+            buffer += flower[1];
             if (i < bouquet.length - 1) {
-                System.out.print(", ");
+                buffer += ", ";
             } else {
-                System.out.println(".\nPurse: " + flowerStore.getPurse());
+                buffer += ".";
             }
         }
+        return buffer;
+    }
+
+    static void show(Flower[] bouquet) {
+        System.out.println(formBouquet(bouquet));
+        System.out.println("Purse: " + flowerStore.getPurse());
     }
 
     public static void main(String[] args) {
 
-        show(flowerStore.sell(2,3,2));
-        show(flowerStore.sellSequence(5,7,3));
+        System.out.println("\nSell:");
+        show(flowerStore.sell(2, 3, 2));
+
+        System.out.println("\nSell sequence:");
+        show(flowerStore.sellSequence(5, 7, 3));
+
+        System.out.println("\nRead file:");
+        show(FlowersLoader.load(path1));
+
+        System.out.println("\nWrite file:");
+        FlowersSaver.save(path2, flowerStore.sellSequence(7, 9, 5));
 
     }
 }
